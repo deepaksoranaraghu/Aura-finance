@@ -1,0 +1,119 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 98%; /* Paper White */
+    --foreground: 240 10% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
+    
+    /* Signal Orange (Primary Accent) */
+    --primary: 24 100% 50%;
+    --primary-foreground: 0 0% 98%;
+    
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
+    
+    /* Cobalt Blue (Information) */
+    --info: 221 83% 53%;
+    --info-foreground: 0 0% 98%;
+    
+    /* Emerald Green (Success) */
+    --success: 142 71% 45%;
+    --success-foreground: 0 0% 98%;
+    
+    /* Coral Red (Danger) */
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+    
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+    --accent: 240 4.8% 95.9%;
+    --accent-foreground: 240 5.9% 10%;
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 24 100% 50%;
+    --radius: 1.5rem; /* Larger radius for premium feel */
+  }
+
+  .dark {
+    --background: 240 10% 4%; /* Very deep rich black/gray */
+    --foreground: 0 0% 98%;
+    --card: 240 7% 7%; /* Slightly lighter than background */
+    --card-foreground: 0 0% 98%;
+    --popover: 240 7% 7%;
+    --popover-foreground: 0 0% 98%;
+    
+    --primary: 24 100% 50%;
+    --primary-foreground: 0 0% 98%;
+    
+    --secondary: 240 5% 12%; /* Subtle contrast for dark mode */
+    --secondary-foreground: 0 0% 98%;
+    
+    --info: 221 83% 53%;
+    --info-foreground: 0 0% 98%;
+    
+    --success: 142 60% 45%; /* Slightly desaturated for dark mode */
+    --success-foreground: 240 5.9% 10%;
+    
+    --destructive: 0 62.8% 45%;
+    --destructive-foreground: 0 0% 98%;
+    
+    --muted: 240 5% 12%;
+    --muted-foreground: 240 5% 60%; /* Softer muted text */
+    --accent: 240 5% 12%;
+    --accent-foreground: 0 0% 98%;
+    --border: 240 5% 14%; /* Subtle borders */
+    --input: 240 5% 14%;
+    --ring: 24 100% 50%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  }
+  
+  @media (pointer: fine) {
+    body, a, button, input, select, textarea, .interactive-glass {
+      cursor: none !important;
+    }
+  }
+}
+
+@layer utilities {
+  .interactive-glass {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .interactive-glass::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(
+      800px circle at var(--mouse-x, 0) var(--mouse-y, 0),
+      rgba(255, 255, 255, 0.06),
+      transparent 40%
+    );
+    z-index: 1;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.5s;
+  }
+  
+  .interactive-glass:hover::before {
+    opacity: 1;
+  }
+}
