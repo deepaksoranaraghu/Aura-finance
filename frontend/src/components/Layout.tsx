@@ -1,8 +1,7 @@
 import { Outlet, Link, useLocation } from 'react-router-dom';
-import { Home, List, PieChart, Target, Wallet, Settings, Bell, Search, User, ChevronLeft, ChevronRight, Calendar as CalendarIcon } from 'lucide-react';
+import { Home, List, PieChart, Target, Wallet, Settings, Bell, ChevronLeft, ChevronRight, Calendar as CalendarIcon, User } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useTimeContext } from '@/context/TimeContext';
@@ -149,15 +148,9 @@ export function Layout() {
 
           <div className="flex items-center gap-4">
             <Popover>
-              <PopoverTrigger asChild>
-                <motion.button 
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="w-12 h-12 rounded-2xl flex items-center justify-center border border-border/40 hover:bg-muted/50 transition-colors relative interactive-glass"
-                >
-                  <Bell size={20} className="text-muted-foreground" />
-                  <span className="absolute top-3 right-3 w-2.5 h-2.5 rounded-full bg-primary border-2 border-background animate-pulse" />
-                </motion.button>
+              <PopoverTrigger render={<motion.button whileHover={{scale:1.05}} whileTap={{scale:0.95}} className="w-12 h-12 rounded-2xl flex items-center justify-center border border-border/50 bg-background/50 hover:bg-muted/50 transition-colors shadow-sm relative overflow-hidden group" />}>
+                <Bell size={20} className="text-muted-foreground group-hover:text-foreground transition-colors relative z-10" />
+                <span className="absolute top-3 right-3 w-2.5 h-2.5 rounded-full bg-primary border-2 border-background animate-pulse" />
               </PopoverTrigger>
               <PopoverContent className="w-80 p-0 rounded-2xl overflow-hidden shadow-2xl border-border/40" align="end">
                 <div className="p-4 bg-muted/30 border-b border-border/40">

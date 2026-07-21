@@ -56,12 +56,10 @@ export function AddBudgetModal({ children }: { children?: React.ReactNode }) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       {children ? (
-        <DialogTrigger asChild>{children}</DialogTrigger>
+        <DialogTrigger render={<div className="inline-block" />}>{children}</DialogTrigger>
       ) : (
-        <DialogTrigger asChild>
-          <Button className="rounded-full shadow-lg gap-2 bg-primary hover:bg-primary/90">
-            <Plus size={18} /> Create Budget
-          </Button>
+        <DialogTrigger render={<Button className="rounded-full shadow-lg gap-2 bg-primary hover:bg-primary/90" />}>
+          <Plus size={18} /> Create Budget
         </DialogTrigger>
       )}
       <DialogContent className="sm:max-w-[425px] rounded-2xl">

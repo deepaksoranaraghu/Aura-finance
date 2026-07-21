@@ -6,6 +6,7 @@ import { Label } from '@/components/ui/label';
 import { useQueryClient } from '@tanstack/react-query';
 import { API_BASE } from '@/hooks/useApi';
 import { formatCurrency } from '@/lib/utils';
+import { Plus } from 'lucide-react';
 
 export function AddFundsModal({ children, goalId, goalName, currentAmount, targetAmount }: { children?: React.ReactNode, goalId: string, goalName: string, currentAmount: number, targetAmount: number }) {
   const [open, setOpen] = useState(false);
@@ -48,13 +49,13 @@ export function AddFundsModal({ children, goalId, goalName, currentAmount, targe
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        {children ? children : (
-          <Button variant="outline" size="sm" className="rounded-full shadow-sm gap-2">
-            <Plus size={16} /> Add Funds
-          </Button>
-        )}
-      </DialogTrigger>
+      {children ? (
+        <DialogTrigger render={<div className="inline-block" />}>{children}</DialogTrigger>
+      ) : (
+        <DialogTrigger render={<Button variant="outline" size="sm" className="rounded-full shadow-sm gap-2" />}>
+          <Plus size={16} /> Add Funds
+        </DialogTrigger>
+      )}
       <DialogContent className="sm:max-w-[425px] rounded-2xl">
         <DialogHeader>
           <DialogTitle>Add Funds to {goalName}</DialogTitle>

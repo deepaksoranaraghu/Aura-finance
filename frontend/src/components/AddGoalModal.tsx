@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useQueryClient } from '@tanstack/react-query';
+import { Plus } from 'lucide-react';
 import { API_BASE } from '@/hooks/useApi';
 
 const COLORS = ['#ef4444', '#f97316', '#f59e0b', '#84cc16', '#22c55e', '#06b6d4', '#3b82f6', '#6366f1', '#8b5cf6', '#d946ef', '#f43f5e'];
@@ -45,12 +46,10 @@ export function AddGoalModal({ children }: { children?: React.ReactNode }) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       {children ? (
-        <DialogTrigger asChild>{children}</DialogTrigger>
+        <DialogTrigger render={<div className="inline-block" />}>{children}</DialogTrigger>
       ) : (
-        <DialogTrigger asChild>
-          <Button className="rounded-full shadow-lg gap-2 bg-primary hover:bg-primary/90">
-            <Plus size={18} /> Add Goal
-          </Button>
+        <DialogTrigger render={<Button className="rounded-full shadow-lg gap-2 bg-primary hover:bg-primary/90" />}>
+          <Plus size={18} /> Add Goal
         </DialogTrigger>
       )}
       <DialogContent className="sm:max-w-[425px] rounded-2xl">
