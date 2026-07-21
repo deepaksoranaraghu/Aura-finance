@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { useCategories } from '@/hooks/useApi';
+import { useCategories, API_BASE } from '@/hooks/useApi';
 import { useQueryClient } from '@tanstack/react-query';
 import { Plus } from 'lucide-react';
 import { useTimeContext } from '@/context/TimeContext';
@@ -32,7 +32,7 @@ export function AddBudgetModal({ children }: { children?: React.ReactNode }) {
     setLoading(true);
 
     try {
-      await fetch('http://localhost:4000/api/budgets', {
+      await fetch(`${API_BASE}/api/budgets`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

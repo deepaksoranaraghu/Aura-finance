@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useBudgets, useTransactions } from '@/hooks/useApi';
+import { useBudgets, useTransactions, API_BASE } from '@/hooks/useApi';
 import { Card, CardContent } from '@/components/ui/card';
 import { formatCurrency } from '@/lib/utils';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -25,7 +25,7 @@ export function Budgets() {
   const handleDelete = async (id: string) => {
     if (!confirm('Are you sure you want to delete this budget?')) return;
     try {
-      await fetch(`http://localhost:4000/api/budgets/${id}`, { method: 'DELETE' });
+      await fetch(`${API_BASE}/api/budgets/${id}`, { method: 'DELETE' });
       queryClient.invalidateQueries({ queryKey: ['budgets'] });
     } catch (err) {
       console.error(err);

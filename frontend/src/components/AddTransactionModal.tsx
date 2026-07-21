@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { useCategories } from '@/hooks/useApi';
+import { useCategories, API_BASE } from '@/hooks/useApi';
 import { useQueryClient } from '@tanstack/react-query';
 import { Plus } from 'lucide-react';
 import { format } from 'date-fns';
@@ -49,12 +49,12 @@ export function AddTransactionModal({ children, initialData, onOpenChange }: { c
     setLoading(true);
 
     try {
-      const resUsers = await fetch('http://localhost:4000/api/users');
+      const resUsers = await fetch(`${API_BASE}/api/users`);
       const users = await resUsers.json();
       const userId = users[0].id;
       const accountId = users[0].accounts[0].id;
 
-      const url = initialData ? `http://localhost:4000/api/transactions/${initialData.id}` : 'http://localhost:4000/api/transactions';
+      const url = initialData ? `${API_BASE}/api/transactions/${initialData.id}` : `${API_BASE}/api/transactions`;
       const method = initialData ? 'PUT' : 'POST';
 
       await fetch(url, {

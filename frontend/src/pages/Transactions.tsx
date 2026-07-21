@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useTransactions } from '@/hooks/useApi';
+import { useTransactions, API_BASE } from '@/hooks/useApi';
 import { Card } from '@/components/ui/card';
 import { formatCurrency } from '@/lib/utils';
 import { Search, MoreHorizontal, Pencil, Trash } from 'lucide-react';
@@ -28,7 +28,7 @@ export function Transactions() {
   const handleDelete = async (id: string) => {
     if (!confirm('Are you sure you want to delete this transaction?')) return;
     try {
-      await fetch(`http://localhost:4000/api/transactions/${id}`, { method: 'DELETE' });
+      await fetch(`${API_BASE}/api/transactions/${id}`, { method: 'DELETE' });
       queryClient.invalidateQueries({ queryKey: ['transactions'] });
       queryClient.invalidateQueries({ queryKey: ['summary'] });
       queryClient.invalidateQueries({ queryKey: ['analytics'] });

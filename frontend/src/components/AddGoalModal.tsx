@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useQueryClient } from '@tanstack/react-query';
-import { Plus } from 'lucide-react';
+import { API_BASE } from '@/hooks/useApi';
 
 const COLORS = ['#ef4444', '#f97316', '#f59e0b', '#84cc16', '#22c55e', '#06b6d4', '#3b82f6', '#6366f1', '#8b5cf6', '#d946ef', '#f43f5e'];
 
@@ -25,7 +25,7 @@ export function AddGoalModal({ children }: { children?: React.ReactNode }) {
     setLoading(true);
 
     try {
-      await fetch('http://localhost:4000/api/goals', {
+      await fetch(`${API_BASE}/api/goals`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData)

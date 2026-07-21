@@ -1,4 +1,4 @@
-import { useGoals } from '@/hooks/useApi';
+import { useGoals, API_BASE } from '@/hooks/useApi';
 import { Card, CardContent } from '@/components/ui/card';
 import { formatCurrency } from '@/lib/utils';
 import { motion } from 'framer-motion';
@@ -16,7 +16,7 @@ export function Savings() {
   const handleDelete = async (id: string) => {
     if (!confirm('Are you sure you want to delete this goal?')) return;
     try {
-      await fetch(`http://localhost:4000/api/goals/${id}`, { method: 'DELETE' });
+      await fetch(`${API_BASE}/api/goals/${id}`, { method: 'DELETE' });
       queryClient.invalidateQueries({ queryKey: ['goals'] });
       queryClient.invalidateQueries({ queryKey: ['summary'] });
       queryClient.invalidateQueries({ queryKey: ['insights'] });

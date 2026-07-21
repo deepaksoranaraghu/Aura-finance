@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useQueryClient } from '@tanstack/react-query';
-import { Plus } from 'lucide-react';
+import { API_BASE } from '@/hooks/useApi';
 import { formatCurrency } from '@/lib/utils';
 
 export function AddFundsModal({ children, goalId, goalName, currentAmount, targetAmount }: { children?: React.ReactNode, goalId: string, goalName: string, currentAmount: number, targetAmount: number }) {
@@ -19,7 +19,7 @@ export function AddFundsModal({ children, goalId, goalName, currentAmount, targe
     setLoading(true);
 
     try {
-      const res = await fetch(`http://localhost:4000/api/goals/${goalId}/add-funds`, {
+      const res = await fetch(`${API_BASE}/api/goals/${goalId}/add-funds`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ amount: parseFloat(amount) })
