@@ -9,6 +9,11 @@ const port = process.env.PORT || 4000;
 app.use(cors());
 app.use(express.json());
 
+// Health check route
+app.get('/', (req, res) => {
+  res.send('Aura Finance API is running perfectly!');
+});
+
 // Helper for date filtering
 function getDateFilter(req: express.Request) {
   const { month, year } = req.query as { month?: string, year?: string };
