@@ -50,14 +50,24 @@ export function AddTransactionModal({ children, initialData, onOpenChange }: { c
 
     try {
       const resUsers = await fetch(`${API_BASE}/api/users`);
+      if (!resUsers.ok) throw new Error("Failed to fetch users");
       const users = await resUsers.json();
+      
+      if (!users || users.length === 0) {
+        throw new Error("No users found. Please refresh the page to auto-provision.");
+      }
+      
       const userId = users[0].id;
-      const accountId = users[0].accounts[0].id;
+      const accountId = users[0].accounts[0]?.id;
+      
+      if (!accountId) {
+        throw new Error("No main account found.");
+      }
 
       const url = initialData ? `${API_BASE}/api/transactions/${initialData.id}` : `${API_BASE}/api/transactions`;
       const method = initialData ? 'PUT' : 'POST';
 
-      await fetch(url, {
+      const response = await fetch(url, {
         method,
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -69,6 +79,11 @@ export function AddTransactionModal({ children, initialData, onOpenChange }: { c
         })
       });
 
+      if (!response.ok) {
+        const errData = await response.json().catch(() => ({}));
+        throw new Error(errData.error || 'Failed to save transaction');
+      }
+
       queryClient.invalidateQueries({ queryKey: ['transactions'] });
       queryClient.invalidateQueries({ queryKey: ['summary'] });
       queryClient.invalidateQueries({ queryKey: ['analytics'] });
@@ -79,8 +94,9 @@ export function AddTransactionModal({ children, initialData, onOpenChange }: { c
       if (!initialData) {
         setFormData({ amount: '', merchant: '', date: getDefaultDate(), categoryId: '', type: 'Expense' });
       }
-    } catch (err) {
+    } catch (err: any) {
       console.error(err);
+      alert(err.message || "An unexpected error occurred");
     } finally {
       setLoading(false);
     }
@@ -183,7 +199,7 @@ export function AddTransactionModal({ children, initialData, onOpenChange }: { c
           </div>
 
           <div className="pt-4 flex justify-end">
-            <Button type="submit" disabled={loading} className="w-full">
+            <Button type="submit" disabled={loading || !categories || categories.length === 0} className="w-full">
               {loading ? 'Saving...' : 'Save Transaction'}
             </Button>
           </div>

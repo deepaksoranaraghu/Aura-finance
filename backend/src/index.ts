@@ -233,9 +233,12 @@ app.post('/api/goals/:id/add-funds', async (req, res) => {
     const goal = await prisma.goal.findUnique({ where: { id: req.params.id } });
     if (!goal) return res.status(404).json({ error: 'Goal not found' });
 
-    // Enforce target limit
+    // Enforce strict target limit
     const remaining = Math.max(0, goal.target - goal.current);
-    const amountToAdd = Math.min(amount, remaining);
+    if (amount > remaining) {
+      return res.status(400).json({ error: `Cannot add more than the remaining target ($${remaining.toFixed(2)})` });
+    }
+    const amountToAdd = amount;
 
     if (amountToAdd <= 0) return res.status(400).json({ error: 'Goal is already fully funded' });
 
@@ -550,9 +553,48 @@ app.post('/api/sync', async (req, res) => {
   }
 });
 
-app.listen(Number(port), '0.0.0.0', () => {
-  console.log(`Backend listening at http://127.0.0.1:${port}`);
-});
+async function ensureDbInitialized() {
+  try {
+    const userCount = await prisma.user.count();
+    if (userCount === 0) {
+      console.log('Database empty: Auto-provisioning default user and categories...');
+      const user = await prisma.user.create({
+        data: {
+          name: 'Demo User',
+          email: 'demo@example.com',
+          accounts: {
+            create: {
+              name: 'Main Checking',
+              type: 'Checking',
+              balance: 10000
+            }
+          }
+        }
+      });
+
+      await prisma.category.createMany({
+        data: [
+          { name: 'Food', color: '#f97316', icon: 'Utensils', type: 'Expense', userId: user.id },
+          { name: 'Rent', color: '#3b82f6', icon: 'Home', type: 'Expense', userId: user.id },
+          { name: 'Shopping', color: '#ec4899', icon: 'ShoppingBag', type: 'Expense', userId: user.id },
+          { name: 'Salary', color: '#10b981', icon: 'Briefcase', type: 'Income', userId: user.id },
+        ]
+      });
+      console.log('Auto-provisioning complete.');
+    }
+  } catch (err) {
+    console.error('Failed to auto-provision DB:', err);
+  }
+}
+
+async function startServer() {
+  await ensureDbInitialized();
+  app.listen(Number(port), '0.0.0.0', () => {
+    console.log(`Backend listening at http://127.0.0.1:${port}`);
+  });
+}
+
+startServer();
 
 // Prevent Node from exiting immediately if there's an event loop issue
 setInterval(() => {}, 1000 * 60 * 60);
