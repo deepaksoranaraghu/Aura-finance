@@ -609,6 +609,6 @@ startServer();
 setInterval(() => {}, 1000 * 60 * 60);
 
 // Catch-all route to serve the frontend's index.html for React Router
-app.get('*', (req, res) => {
+app.get(/.*/, (req, res) => {
   res.sendFile(path.join(__dirname, '../../../frontend/dist/index.html'));
 });
