@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import { PrismaClient } from '@prisma/client';
+import path from 'path';
 
 const app = express();
 const prisma = new PrismaClient();
@@ -8,6 +9,9 @@ const port = process.env.PORT || 4000;
 
 app.use(cors());
 app.use(express.json());
+
+// Serve static files from the React frontend build
+app.use(express.static(path.join(__dirname, '../../../frontend/dist')));
 
 // Health check route
 app.get('/', (req, res) => {
@@ -603,3 +607,8 @@ startServer();
 
 // Prevent Node from exiting immediately if there's an event loop issue
 setInterval(() => {}, 1000 * 60 * 60);
+
+// Catch-all route to serve the frontend's index.html for React Router
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../../../frontend/dist/index.html'));
+});
